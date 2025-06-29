@@ -10,11 +10,11 @@ import Forbidden403 from './pages/Forbidden403';
 const App: React.FC = () => {
   return (
     <Routes>
+      <Route path="/login" element={<Login />} />
       <Route path="/" element={<UserTable />} />
       <Route path="/users/:userId" element={<UserDetailPage />} />
         <Route path="/users/:userId/edit" element={<UserUpdatePage />} />
         <Route path="/users/create" element={<UserCreate />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/403" element={<Forbidden403 />} />
 
