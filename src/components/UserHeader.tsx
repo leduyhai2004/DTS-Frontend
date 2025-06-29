@@ -7,7 +7,7 @@ interface Props {
   onSearch: (keyword: string) => void;
 }
 
-const UserHeader: React.FC<Props> = ({ currentUserName, avatarUrl, onSearch }) => {
+const UserHeader: React.FC<Props> = ({ currentUserName, onSearch }) => {
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate(); // 🔁 ADD THIS
 
@@ -23,7 +23,7 @@ const UserHeader: React.FC<Props> = ({ currentUserName, avatarUrl, onSearch }) =
     <div className="d-flex justify-content-between align-items-center p-3 bg-light border-bottom mb-3">
       <div className="d-flex align-items-center">
         <img
-          src={avatarUrl}
+          src={`http://localhost:8080/api/users/1/image`}
           alt="User Avatar"
           width={40}
           height={40}

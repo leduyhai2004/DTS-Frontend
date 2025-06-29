@@ -9,7 +9,10 @@ interface User {
   email: string;
   phone: string;
   avatar: string;
-roleName: string;
+  role: {
+    id: number;
+    name: string;
+  };
   status: string;
   createdAt: number[];
   updatedAt: number[];
@@ -29,6 +32,7 @@ const UserDetailPage: React.FC = () => {
       try {
         const res = await axios.get<User>(`http://localhost:8080/api/users/${userId}`);
         setUser(res.data);
+        console.log('Fetched user:', res.data);
       } catch (err) {
         console.error('Error fetching user', err);
       } finally {
@@ -50,7 +54,7 @@ const UserDetailPage: React.FC = () => {
           <div className="row">
             <div className="col-md-3">
               <img
-                src={`/${user.avatar}`}
+                src={`http://localhost:8080/api/users/${userId}/image`}
                 alt={user.name}
                 className="img-thumbnail"
               />
@@ -61,7 +65,7 @@ const UserDetailPage: React.FC = () => {
               <p><strong>Email:</strong> {user.email}</p>
               <p><strong>Phone:</strong> {user.phone}</p>
               <p><strong>Status:</strong> {user.status}</p>
-              <p><strong>Role:</strong> {user.roleName}</p>
+              <p><strong>Role:</strong> {user.role.name}</p>
               <p><strong>Created At:</strong> {formatDate(user.createdAt)}</p>
               <p><strong>Updated At:</strong> {formatDate(user.updatedAt)}</p>
               <Link to="/" className="btn btn-secondary mt-2">Back to User List</Link>

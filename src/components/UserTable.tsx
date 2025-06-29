@@ -124,7 +124,7 @@ const UserTable: React.FC = () => {
           {users.map((user, idx) => (
             <tr key={user.id}>
               <td>{pageNo * pageSize + idx + 1}</td>
-              <td><img src={`/${user.avatar}`} alt={user.name} width="40" height="40" /></td>
+              <td><img src={`http://localhost:8080/api/users/${user.id}/image`} alt={user.name} width="40" height="40" /></td>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.phone}</td>
