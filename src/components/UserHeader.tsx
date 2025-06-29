@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axiosInstance from '../config/axiosConfig';
 
 interface Props {
   currentUserName: string;
@@ -10,6 +11,21 @@ interface Props {
 const UserHeader: React.FC<Props> = ({ currentUserName, onSearch }) => {
   const [keyword, setKeyword] = useState('');
   const navigate = useNavigate(); // 🔁 ADD THIS
+
+  const handleLogout = async () => {
+    try {
+      await axiosInstance.post('http://localhost:8080/api/auth/logout');
+      // Clear the token from localStorage
+      localStorage.removeItem('token');
+      // Navigate to login page
+      navigate('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      // Even if logout API fails, clear token and redirect
+      localStorage.removeItem('token');
+      navigate('/login');
+    }
+  };
 
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -42,9 +58,15 @@ const UserHeader: React.FC<Props> = ({ currentUserName, onSearch }) => {
           onKeyDown={handleKeyDown}
         />
       </form>
+      
+      <div className="d-flex gap-2">
         <button className="btn btn-primary" onClick={() => navigate('/users/create')}>
           + Add User
         </button>
+        <button className="btn btn-outline-danger" onClick={handleLogout}>
+          Logout
+        </button>
+      </div>
     </div>
   );
 };

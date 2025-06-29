@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/axiosConfig';
 
 interface User {
   id: number;
@@ -30,7 +30,7 @@ const UserDetailPage: React.FC = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const res = await axios.get<User>(`http://localhost:8080/api/users/${userId}`);
+        const res = await axiosInstance.get<User>(`http://localhost:8080/api/users/${userId}`);
         setUser(res.data);
         console.log('Fetched user:', res.data);
       } catch (err) {

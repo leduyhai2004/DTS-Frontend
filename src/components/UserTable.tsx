@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axiosConfig';
 import type { PagedResponse, User } from '../types/User';
 import { useNavigate } from 'react-router-dom';
 import UserHeader from './UserHeader';
@@ -21,7 +21,7 @@ const UserTable: React.FC = () => {
     }
 
     try {
-        const res = await axios.get<PagedResponse>(
+        const res = await axiosInstance.get<PagedResponse>(
         `http://localhost:8080/api/users/search?keyword=${keyword}`
         );
         setUsers(res.data.content);              // ✅ correct field
@@ -42,7 +42,7 @@ const UserTable: React.FC = () => {
 
   const fetchUsers = async (page: number) => {
     try {
-      const res = await axios.get<PagedResponse>(
+      const res = await axiosInstance.get<PagedResponse>(
         `http://localhost:8080/api/users?pageNo=${page}&pageSize=${pageSize}`
       );
       setUsers(res.data.content);
@@ -84,9 +84,9 @@ const UserTable: React.FC = () => {
         const confirm = window.confirm('Are you sure you want to inactivate this user?');
         if (!confirm) return;
 
-        await axios.delete(`http://localhost:8080/api/users/${user.id}`);
+        await axiosInstance.delete(`http://localhost:8080/api/users/${user.id}`);
         } else {
-        await axios.put(`http://localhost:8080/api/users/${user.id}/active`);
+        await axiosInstance.put(`http://localhost:8080/api/users/${user.id}/active`);
         }
 
         // Refresh the user list for current page

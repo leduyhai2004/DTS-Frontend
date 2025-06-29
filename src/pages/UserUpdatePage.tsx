@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import axiosInstance from '../config/axiosConfig';
 
 interface Role {
   id: number;
@@ -36,8 +36,8 @@ const UserUpdatePage: React.FC = () => {
     const fetchData = async () => {
       try {
         const [userRes, rolesRes] = await Promise.all([
-          axios.get(`http://localhost:8080/api/users/${userId}`),
-          axios.get<Role[]>(`http://localhost:8080/api/roles`)
+          axiosInstance.get(`http://localhost:8080/api/users/${userId}`),
+          axiosInstance.get<Role[]>(`http://localhost:8080/api/roles`)
         ]);
 
         const user = userRes.data;
@@ -51,7 +51,7 @@ const UserUpdatePage: React.FC = () => {
 
         // fetch avatar image as blob
         try {
-          const imgRes = await axios.get(
+          const imgRes = await axiosInstance.get(
             `http://localhost:8080/api/users/${userId}/image`,
             { responseType: 'blob' }
           );
@@ -95,7 +95,7 @@ const UserUpdatePage: React.FC = () => {
       formData.append('imageFile', imageFile);
     }
     try {
-      await axios.put(
+      await axiosInstance.put(
         `http://localhost:8080/api/users/${userId}`,
         formData,
         { headers: { 'Content-Type': 'multipart/form-data' } }

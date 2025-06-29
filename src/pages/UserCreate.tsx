@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axiosInstance from '../config/axiosConfig';
 import { useNavigate } from 'react-router-dom';
 
 const UserCreate: React.FC = () => {
@@ -51,7 +51,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
   try {
-    const res = await axios.post('http://localhost:8080/api/users',formData);
+    const res = await axiosInstance.post('http://localhost:8080/api/users',formData);
     console.log('Create user response:', res.data);
     alert('User created successfully!');
     navigate('/');
