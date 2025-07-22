@@ -11,7 +11,6 @@ const UserCreate: React.FC = () => {
     email: '',
     password: '',
     phone: '',
-    avatar: '',
   });
 
   const [preview, setPreview] = useState<string | null>(null);
@@ -22,44 +21,46 @@ const UserCreate: React.FC = () => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (file) {
-    setImageFile(file); // ✅ Save file to send via FormData
-    setPreview(URL.createObjectURL(file));
-  }
-};
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setImageFile(file); // ✅ Save file to send via FormData
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
 
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const formData = new FormData();
-  console.log('Form JSON:', user);
+    const formData = new FormData();
+    console.log('Form JSON:', user);
     console.log('Image file:', imageFile);
     console.log('Preview URL:', preview);
 
-  // Send JSON as string, not as Blob
-  if (imageFile) {
-    formData.append('imageFile', imageFile);
-  }
+    // Send JSON as string, not as Blob
+    if (imageFile) {
+      formData.append('imageFile', imageFile);
+    }
     formData.append(
-    'request',
-    new Blob([JSON.stringify(user)], { type: 'application/json' })
-  );
-    // formData.append('request', JSON.stringify(user));
+      'request',
+      new Blob([JSON.stringify(user)], { type: 'application/json' })
+    );
 
-
-  try {
-    const res = await axiosInstance.post('http://localhost:8080/api/users',formData);
-    console.log('Create user response:', res.data);
-    alert('User created successfully!');
-    navigate('/');
-  } catch (err) {
-    console.error('Create user failed', err);
-    alert('Failed to create user');
-  }
-};
+    try {
+      const res = await axiosInstance.post('http://localhost:8080/api/users', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log('Create user response:', res.data);
+      alert('User created successfully!');
+      navigate('/');
+    } catch (err) {
+      console.error('Create user failed', err);
+      alert('Failed to create user');
+    }
+  };
 
 
   return (

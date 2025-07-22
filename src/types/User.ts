@@ -6,6 +6,12 @@ export interface User {
   phone: string;
   avatar: string;
   status: string;
+  role: {
+    id: number;
+    name: string;
+  };
+  userAvatar: string;
+  userAvatarUrl: string; // URL to fetch the avatar image
   createdAt: number[];
   updatedAt: number[];
 }

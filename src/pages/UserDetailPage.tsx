@@ -13,6 +13,8 @@ interface User {
     id: number;
     name: string;
   };
+  userAvatar: string;
+  userAvatarUrl: string;
   status: string;
   createdAt: number[];
   updatedAt: number[];
@@ -54,7 +56,7 @@ const UserDetailPage: React.FC = () => {
           <div className="row">
             <div className="col-md-3">
               <img
-                src={`http://localhost:8080/api/users/${userId}/image`}
+                src={`${user.userAvatarUrl}`}
                 alt={user.name}
                 className="img-thumbnail"
               />

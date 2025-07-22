@@ -12,26 +12,26 @@ const UserTable: React.FC = () => {
   const currentUser = {
     name: 'Admin User',
     avatar: '/admin-avatar.jpg'
-};
+  };
 
-    const handleSearch = async (keyword: string) => {
+  const handleSearch = async (keyword: string) => {
     if (!keyword.trim()) {
-        fetchUsers(0); // Load full user list again
-        return;
+      fetchUsers(0); // Load full user list again
+      return;
     }
 
     try {
-        const res = await axiosInstance.get<PagedResponse>(
+      const res = await axiosInstance.get<PagedResponse>(
         `http://localhost:8080/api/users/search?keyword=${keyword}`
-        );
-        setUsers(res.data.content);              // ✅ correct field
-        setPageNo(res.data.number);              // for consistency
-        setTotalPages(res.data.totalPages);      // support multi-page result
+      );
+      setUsers(res.data.content);              // ✅ correct field
+      setPageNo(res.data.number);              // for consistency
+      setTotalPages(res.data.totalPages);      // support multi-page result
     } catch (err) {
-        console.error('Search failed:', err);
-        alert('Failed to search users');
+      console.error('Search failed:', err);
+      alert('Failed to search users');
     }
-    };
+  };
 
 
 
@@ -63,49 +63,42 @@ const UserTable: React.FC = () => {
     }
   };
 
-//   const formatDate = (arr: number[]): string => {
-//     return new Date(
-//       arr[0], arr[1] - 1, arr[2], arr[3], arr[4], arr[5]
-//     ).toLocaleString();
-//   };
   const handleDetail = (id: number) => {
-    // Navigate to detail page (not implemented in this example)
     navigate(`/users/${id}`);
     console.log(`Detail for user ID: ${id}`);
   }
-    const handleUpdate = (id: number) => {
-        // Navigate to update page (not implemented in this example)
-        navigate(`/users/${id}/edit`);
-        console.log(`Update for user ID: ${id}`);
-    }
-    const handleToggleStatus = async (user: User) => {
+  const handleUpdate = (id: number) => {
+    navigate(`/users/${id}/edit`);
+    console.log(`Update for user ID: ${id}`);
+  }
+  const handleToggleStatus = async (user: User) => {
     try {
-        if (user.status === 'ACTIVE') {
+      if (user.status === 'ACTIVE') {
         const confirm = window.confirm('Are you sure you want to inactivate this user?');
         if (!confirm) return;
 
         await axiosInstance.delete(`http://localhost:8080/api/users/${user.id}`);
-        } else {
+      } else {
         await axiosInstance.put(`http://localhost:8080/api/users/${user.id}/active`);
-        }
+      }
 
-        // Refresh the user list for current page
-        fetchUsers(pageNo);
+      // Refresh the user list for current page
+      fetchUsers(pageNo);
     } catch (error) {
-        console.error('Error toggling user status:', error);
-        alert('Failed to change user status');
+      console.error('Error toggling user status:', error);
+      alert('Failed to change user status');
     }
-    };
+  };
 
 
   return (
-    
+
     <div className="container mt-4">
-        <UserHeader
+      <UserHeader
         currentUserName={currentUser.name}
         avatarUrl={currentUser.avatar}
         onSearch={handleSearch}
-        />
+      />
 
       <h3>User List</h3>
       <table className="table table-striped table-bordered">
@@ -124,31 +117,31 @@ const UserTable: React.FC = () => {
           {users.map((user, idx) => (
             <tr key={user.id}>
               <td>{pageNo * pageSize + idx + 1}</td>
-              <td><img src={`http://localhost:8080/api/users/${user.id}/image`} alt={user.name} width="40" height="40" /></td>
+              <td><img src={`${user.userAvatarUrl}`} alt={user.name} width="40" height="40" /></td>
               <td>{user.name}</td>
               <td>{user.email}</td>
               <td>{user.phone}</td>
               <td>{user.status}</td>
               <td>
                 <button
-                className="btn btn-info btn-sm me-2"
-                onClick={() => handleDetail(user.id)}
+                  className="btn btn-info btn-sm me-2"
+                  onClick={() => handleDetail(user.id)}
                 >
-                Detail
+                  Detail
                 </button>
                 <button
-                className="btn btn-warning btn-sm me-2"
-                onClick={() => handleUpdate(user.id)}
+                  className="btn btn-warning btn-sm me-2"
+                  onClick={() => handleUpdate(user.id)}
                 >
-                Update
+                  Update
                 </button>
                 <button
-                className={`btn btn-sm ${user.status === 'ACTIVE' ? 'btn-danger' : 'btn-success'}`}
-                onClick={() => handleToggleStatus(user)}
+                  className={`btn btn-sm ${user.status === 'ACTIVE' ? 'btn-danger' : 'btn-success'}`}
+                  onClick={() => handleToggleStatus(user)}
                 >
-                {user.status === 'ACTIVE' ? 'Inactive' : 'Active'}
+                  {user.status === 'ACTIVE' ? 'Inactive' : 'Active'}
                 </button>
-            </td>
+              </td>
             </tr>
           ))}
         </tbody>

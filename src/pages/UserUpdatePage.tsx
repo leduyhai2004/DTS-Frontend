@@ -51,12 +51,9 @@ const UserUpdatePage: React.FC = () => {
 
         // fetch avatar image as blob
         try {
-          const imgRes = await axiosInstance.get(
-            `http://localhost:8080/api/users/${userId}/image`,
-            { responseType: 'blob' }
-          );
-          const url = URL.createObjectURL(imgRes.data);
-          setPreview(url);
+          if (user.userAvatarUrl) {
+            setPreview(user.userAvatarUrl); // <-- Sử dụng đường dẫn trả về
+          }
         } catch (e) {
           console.warn('No avatar to load', e);
         }

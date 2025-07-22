@@ -58,7 +58,7 @@ const UserHeader: React.FC<Props> = ({ currentUserName, onSearch }) => {
           onKeyDown={handleKeyDown}
         />
       </form>
-      
+
       <div className="d-flex gap-2">
         <button className="btn btn-primary" onClick={() => navigate('/users/create')}>
           + Add User
